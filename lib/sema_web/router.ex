@@ -17,6 +17,14 @@ defmodule SemaWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    resources "/users", UserController
+    resources "/posts", PostController
+  end
+
+  scope "/cms", SemaWeb.CMS, as: :cms do
+    pipe_through :browser
+
+    resources "/pages", PageController
   end
 
   # Other scopes may use custom stacks.
