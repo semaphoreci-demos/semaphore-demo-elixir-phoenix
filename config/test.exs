@@ -10,9 +10,10 @@ config :sema, SemaWeb.Endpoint,
 config :logger, level: :warn
 
 # Configure your database
-config :sema, Sema.Repo,
-  username: "postgres",
-  password: "postgres",
-  database: "sema_test",
-  hostname: "localhost",
-  pool: Ecto.Adapters.SQL.Sandbox
+config :sema, Sema.Repo, pool: Ecto.Adapters.SQL.Sandbox
+
+if url = System.get_env("DATABASE_URL") do
+  config :sema, Sema.Repo, url: url
+else
+  config :sema, Sema.Repo, database: "sema_test"
+end

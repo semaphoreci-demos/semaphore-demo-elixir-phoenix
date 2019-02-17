@@ -10,6 +10,8 @@ use Mix.Config
 config :sema,
   ecto_repos: [Sema.Repo]
 
+config :sema, Sema.Repo, pool_size: 10
+
 # Configures the endpoint
 config :sema, SemaWeb.Endpoint,
   url: [host: "localhost"],
