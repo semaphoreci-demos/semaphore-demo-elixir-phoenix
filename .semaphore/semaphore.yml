@@ -9,52 +9,24 @@ blocks:
 - name: Prepare
   task:
     jobs:
-    - name: kiex, deps, compile dev, plts, and stuff ...
-      env_vars:
-      - name: MIX_ENV
-        value: test
+    - name: compile and build plts
       commands:
       - checkout
-      - bin/setup_ci_elixir
-      - sem-version elixir 1.8.1
-      - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH,mix-deps-master
-      - cache restore mix-build-$MIX_ENV-$SEMAPHORE_GIT_BRANCH,mix-build-$MIX_ENV-master
-      - mix do deps.get, compile
-      # TODO this is just ugly
-      - cache delete mix-deps-$SEMAPHORE_GIT_BRANCH
-      - cache store mix-deps-$SEMAPHORE_GIT_BRANCH deps
-      - cache delete mix-build-$MIX_ENV-$SEMAPHORE_GIT_BRANCH
-      - cache store mix-build-$MIX_ENV-$SEMAPHORE_GIT_BRANCH _build/$MIX_ENV
 
-- name: Compile test and plts
-  task:
-    prologue:
-      commands:
-      - checkout
+      # install and cache elixir 1.8.1 via kiex, without it, sem-version below won't work
       - bin/setup_ci_elixir
       - sem-version elixir 1.8.1
-      - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH
-      - cache restore mix-build-$MIX_ENV-$SEMAPHORE_GIT_BRANCH,mix-build-$MIX_ENV-master
-    epilogue:
-      commands:
-      # TODO
-      # possibly introduces a race condition when several pipelines
-      # for the same branch start concurrently
-      - cache delete mix-build-$MIX_ENV-$SEMAPHORE_GIT_BRANCH
-      - cache store mix-build-$MIX_ENV-$SEMAPHORE_GIT_BRANCH _build/$MIX_ENV
-    jobs:
-    - name: compile in test env
-      env_vars:
-      - name: MIX_ENV
-        value: test
-      commands:
-      - mix compile
-    - name: build plts
-      env_vars:
-      - name: MIX_ENV
-        value: dev
-      commands:
-      - mix dialyzer --plt
+
+      - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock),mix-deps-$SEMAPHORE_GIT_BRANCH,mix-deps-master
+      - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock),mix-build-$SEMAPHORE_GIT_BRANCH,mix-build-master
+
+      - mix deps.get
+      - mix do compile, dialyzer --plt
+      - MIX_ENV=test mix compile
+
+      # we can store deps only after compilation, otherwise rebar3 deps (that is, almost all erlang deps) won't be cached
+      - cache store mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) deps
+      - cache store mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) _build
 
 - name: Check
   task:
@@ -63,12 +35,10 @@ blocks:
       - checkout
       - bin/setup_ci_elixir
       - sem-version elixir 1.8.1
-      - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH
-      - cache restore mix-build-$MIX_ENV-$SEMAPHORE_GIT_BRANCH
-    env_vars:
-    - name: MIX_ENV
-      value: dev
+      - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
+      - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
     jobs:
+
     - name: ex_unit
       env_vars:
       - name: MIX_ENV
@@ -79,12 +49,15 @@ blocks:
       - npm install -g phantomjs-prebuilt
       - sem-service start postgres
       - mix test
+
     - name: credo
       commands:
       - mix credo -a
+
     - name: dialyzer
       commands:
-      - mix dialyzer --halt-exit-status
+      - mix dialyzer --halt-exit-status --no-compile
+
     - name: formatter
       commands:
       - mix format --check-formatted
