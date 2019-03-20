@@ -41,8 +41,6 @@ blocks:
 
     - name: ex_unit
       env_vars:
-      - name: MIX_ENV
-        value: test
       - name: DATABASE_URL
         value: "ecto://postgres:@0.0.0.0:5432/yay_test"
       commands:
