@@ -8,6 +8,9 @@ config :sema, SemaWeb.Endpoint,
 
 config :sema, :sql_sandbox, true
 
+config :wallaby,
+  driver: Wallaby.Experimental.Chrome
+
 # Print only warnings and errors during test
 config :logger, level: :warn
 

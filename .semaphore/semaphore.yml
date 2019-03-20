@@ -44,7 +44,6 @@ blocks:
       - name: DATABASE_URL
         value: "ecto://postgres:@0.0.0.0:5432/yay_test"
       commands:
-      - npm install -g phantomjs-prebuilt
       - sem-service start postgres
       - mix test
 
