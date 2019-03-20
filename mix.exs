@@ -45,7 +45,8 @@ defmodule Sema.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.0", runtime: false, only: :dev},
       {:distillery, "~> 2.0", runtime: false},
-      {:dialyxir, "~> 1.0-rc", runtime: false, only: :dev}
+      {:dialyxir, "~> 1.0-rc", runtime: false, only: :dev},
+      {:wallaby, "~> 0.22.0", runtime: false, only: :test}
     ]
   end
 

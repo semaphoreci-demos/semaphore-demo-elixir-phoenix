@@ -1,6 +1,10 @@
 defmodule SemaWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :sema
 
+  if Application.get_env(:sema, :sql_sandbox) do
+    plug Phoenix.Ecto.SQL.Sandbox
+  end
+
   socket "/socket", SemaWeb.UserSocket,
     websocket: true,
     longpoll: false
