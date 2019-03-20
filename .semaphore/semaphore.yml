@@ -42,7 +42,7 @@ blocks:
     - name: ex_unit
       env_vars:
       - name: DATABASE_URL
-        value: "ecto://postgres:@0.0.0.0:5432/yay_test"
+        value: "ecto://postgres:@0.0.0.0:5432/sema_test"
       commands:
       - sem-service start postgres
       - mix test
