@@ -17,10 +17,10 @@ The second block contains 4 parallel jobs.
 
 1. Download dependencies, compile code.
 2. Run tests
-  1. [exunit tests][exunit]
-  2. integration tests via [wallaby][wallaby] using headless Chrome
-  3. [credo][credo] code analysis
-  4. [dialyzer][dialyxir] checks
+    1. [exunit tests][exunit]
+    2. integration tests via [wallaby][wallaby] using headless Chrome
+    3. [credo][credo] code analysis
+    4. [dialyzer][dialyxir] checks
 
 ## License
 
