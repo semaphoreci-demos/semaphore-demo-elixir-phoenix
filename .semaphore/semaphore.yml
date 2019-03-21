@@ -48,40 +48,50 @@ blocks:
         - cache store mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) deps
         - cache store mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) _build
 
-- name: Run tests
-  task:
-    # Commands in prologue run at the beginning of each parallel job.
-    # https://docs.semaphoreci.com/article/50-pipeline-yaml
-    prologue:
-      commands:
-      - checkout
-      - bin/setup_ci_elixir
-      - sem-version elixir 1.8.1
-      - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
-      - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
+    - name: Analyze code
+      task:
+        # Commands in prologue run at the beginning of each parallel job.
+        # https://docs.semaphoreci.com/article/50-pipeline-yaml
+        prologue:
+          commands:
+          - checkout
+          - bin/setup_ci_elixir
+          - sem-version elixir 1.8.1
+          - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
+          - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
+        # This block contains 3 parallel jobs:
+        jobs:
+        - name: credo
+          commands:
+          - mix credo -a
 
-    # This block contains 4 parallel jobs:
-    jobs:
-    - name: ex_unit
-      # Define an environment variable
-      # See https://docs.semaphoreci.com/article/66-environment-variables-and-secrets
-      env_vars:
-      - name: DATABASE_URL
-        value: "ecto://postgres:@0.0.0.0:5432/sema_test"
-      commands:
-      # Start Postgres database service
-      # https://docs.semaphoreci.com/article/54-toolbox-reference#sem-service
-      - sem-service start postgres
-      - mix test
+        - name: dialyzer
+          commands:
+          - mix dialyzer --halt-exit-status --no-compile
 
-    - name: credo
-      commands:
-      - mix credo -a
+        - name: formatter
+          commands:
+          - mix format --check-formatted
 
-    - name: dialyzer
-      commands:
-      - mix dialyzer --halt-exit-status --no-compile
+    - name: Run tests
+      task:
+        prologue:
+          commands:
+          - checkout
+          - bin/setup_ci_elixir
+          - sem-version elixir 1.8.1
+          - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
+          - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
 
-    - name: formatter
-      commands:
-      - mix format --check-formatted
+        jobs:
+        - name: ex_unit
+          # Define an environment variable
+          # See https://docs.semaphoreci.com/article/66-environment-variables-and-secrets
+          env_vars:
+          - name: DATABASE_URL
+            value: "ecto://postgres:@0.0.0.0:5432/sema_test"
+          commands:
+          # Start Postgres database service
+          # https://docs.semaphoreci.com/article/54-toolbox-reference#sem-service
+          - sem-service start postgres
+          - mix test

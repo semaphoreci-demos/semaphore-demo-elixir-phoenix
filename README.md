@@ -12,15 +12,14 @@ The CI pipeline will look like this:
 
 ![CI pipeline on Semaphore](public/ci-pipeline.png)
 
-The example pipeline contains 2 blocks.
-The second block contains 4 parallel jobs.
+The example pipeline contains 3 blocks:
 
 1. Download dependencies, compile code.
-2. Run tests
-    1. [exunit tests][exunit]
-    2. integration tests via [wallaby][wallaby] using headless Chrome
-    3. [credo][credo] code analysis
-    4. [dialyzer][dialyxir] checks
+2. Run static code analysis, in 3 parallel jobs:
+    1. [mix format][mix-format]
+    2. [credo][credo] code analysis
+    3. [dialyzer][dialyxir] checks
+3. Run [exunit tests][exunit], including integration tests via [wallaby][wallaby] using headless Chrome.
 
 ## License
 
@@ -30,6 +29,7 @@ Distributed under the MIT License. See the file LICENSE.
 
 [semaphore]: https://semaphoreci.com
 [create-project]: https://docs.semaphoreci.com/article/63-your-first-project
+[mix-format]: https://hexdocs.pm/mix/master/Mix.Tasks.Format.html
 [exunit]: https://semaphoreci.com/community/tutorials/introduction-to-testing-elixir-applications-with-exunit
 [wallaby]: https://github.com/keathley/wallaby
 [credo]: https://github.com/rrrene/credo
