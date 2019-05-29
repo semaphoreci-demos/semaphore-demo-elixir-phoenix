@@ -38,6 +38,10 @@ blocks:
           # - https://docs.semaphoreci.com/article/87-language-elixir
           - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock),mix-deps-$SEMAPHORE_GIT_BRANCH,mix-deps-master
           - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock),mix-build-$SEMAPHORE_GIT_BRANCH,mix-build-master
+          # Cache the PLT generated from the dialyzer to speed up pipeline process.
+          # As suggested here - https://github.com/jeremyjh/dialyxir#continuous-integration
+          # This will need to be rebuilt if elixir or erlang version changes.
+          - cache restore dialyzer-plt
 
           - mix deps.get
           - mix do compile, dialyzer --plt
@@ -47,6 +51,7 @@ blocks:
           # Erlang deps) won't be cached:
           - cache store mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) deps
           - cache store mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) _build
+          - cache store dialyzer-plt priv/plts/
 
   - name: Analyze code
     task:
@@ -59,6 +64,7 @@ blocks:
         - sem-version elixir 1.8.1
         - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
         - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
+        - cache restore dialyzer-plt
       # This block contains 3 parallel jobs:
       jobs:
       - name: credo
