@@ -10,10 +10,14 @@ ELIXIR_VSN=1.8.1
 ELIXIR_CACHE_KEY=kiex-elixir-$ELIXIR_VSN
 
 if cache has_key "$ELIXIR_CACHE_KEY"; then
+  cd $HOME/.kiex
   cache restore $ELIXIR_CACHE_KEY
+  cd -
 else
   kiex install $ELIXIR_VSN
-  cache store $ELIXIR_CACHE_KEY $HOME/.kiex/elixirs
+  cd $HOME/.kiex
+  cache store $ELIXIR_CACHE_KEY elixirs
+  cd -
 fi
 
 kiex default $ELIXIR_VSN
