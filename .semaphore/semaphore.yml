@@ -34,10 +34,9 @@ blocks:
 
           # Restore dependencies from cache, command won't fail if it's
           # missing. More on caching:
-          # - https://docs.semaphoreci.com/article/54-toolbox-reference#cache
+          # - https://docs.semaphoreci.com/article/149-caching
           # - https://docs.semaphoreci.com/article/87-language-elixir
-          - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock),mix-deps-$SEMAPHORE_GIT_BRANCH,mix-deps-master
-          - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock),mix-build-$SEMAPHORE_GIT_BRANCH,mix-build-master
+          - cache restore
           # Cache the PLT generated from the dialyzer to speed up pipeline process.
           # As suggested here - https://github.com/jeremyjh/dialyxir#continuous-integration
           # This will need to be rebuilt if elixir or erlang version changes.
@@ -49,8 +48,7 @@ blocks:
 
           # Store deps after compilation, otherwise rebar3 deps (that is, most
           # Erlang deps) won't be cached:
-          - cache store mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) deps
-          - cache store mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock) _build
+          - cache store
           - cache store dialyzer-plt priv/plts/
 
   - name: Analyze code
@@ -62,8 +60,7 @@ blocks:
         - checkout
         - bin/setup_ci_elixir
         - sem-version elixir 1.8.1
-        - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
-        - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
+        - cache restore
         - cache restore dialyzer-plt
       # This block contains 3 parallel jobs:
       jobs:
@@ -86,8 +83,7 @@ blocks:
         - checkout
         - bin/setup_ci_elixir
         - sem-version elixir 1.8.1
-        - cache restore mix-deps-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
-        - cache restore mix-build-$SEMAPHORE_GIT_BRANCH-$(checksum mix.lock)
+        - cache restore
 
       jobs:
       - name: ex_unit
