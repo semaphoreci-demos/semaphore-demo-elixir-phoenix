@@ -3,7 +3,7 @@ version: v1.0
 
 # Name of your pipeline. In this example we connect two pipelines with
 # a promotion, so it helps to differentiate what's the job of each.
-name: Elixir Phoenix example CI pipeline on Semaphore
+name: Build & Test
 
 # An agent defines the environment in which your code runs.
 # It is a combination of one of available machine types and operating
