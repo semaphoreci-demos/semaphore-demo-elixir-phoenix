@@ -8,7 +8,7 @@ blocks:
   - name: Set up
     task:
       jobs:
-        - name: compile and build plts
+        - name: Compile
           commands:
             - checkout
             - bin/setup_ci_elixir
@@ -28,13 +28,13 @@ blocks:
           - cache restore
           - mix deps.get
       jobs:
-        - name: credo
+        - name: Credo
           commands:
             - mix credo -a
-        - name: formatter
+        - name: Formatter
           commands:
             - mix format --check-formatted
-  - name: Run tests
+  - name: Tests
     task:
       prologue:
         commands:
