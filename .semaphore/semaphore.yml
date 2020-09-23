@@ -37,19 +37,14 @@ blocks:
           # - https://docs.semaphoreci.com/article/149-caching
           # - https://docs.semaphoreci.com/article/87-language-elixir
           - cache restore
-          # Cache the PLT generated from the dialyzer to speed up pipeline process.
-          # As suggested here - https://github.com/jeremyjh/dialyxir#continuous-integration
-          # This will need to be rebuilt if elixir or erlang version changes.
-          - cache restore dialyzer-plt
-
           - mix deps.get
-          - mix do compile, dialyzer --plt
+          - mix do compile
           - MIX_ENV=test mix compile
 
           # Store deps after compilation, otherwise rebar3 deps (that is, most
           # Erlang deps) won't be cached:
           - cache store
-          - cache store dialyzer-plt priv/plts/
+
 
   - name: Analyze code
     task:
@@ -61,16 +56,11 @@ blocks:
         - bin/setup_ci_elixir
         - sem-version elixir 1.8.1
         - cache restore
-        - cache restore dialyzer-plt
       # This block contains 3 parallel jobs:
       jobs:
       - name: credo
         commands:
         - mix credo -a
-
-      - name: dialyzer
-        commands:
-        - mix dialyzer --halt-exit-status --no-compile
 
       - name: formatter
         commands:
