@@ -3,22 +3,19 @@
 Example application and continuous integration (CI) pipeline showing how to run
 an Elixir Phoenix project on [Semaphore][semaphore].
 
+**Note:** The `fork-and-run` branch contains simplified and faster pipline that excludes [dialyzer][dialyxir] checks. If you would like to test and use more complex workflow, please fork the `master` branch.
+
 ## CI on Semaphore
 
 Fork this repository and use it to [create your own project][create-project] on
 Semaphore.
 
-The CI pipeline will look like this:
-
-![CI pipeline on Semaphore](public/ci-pipeline.png)
-
 The example pipeline contains 3 blocks:
 
 1. Download dependencies, compile code.
-2. Run static code analysis, in 3 parallel jobs:
+2. Run static code analysis, in 2 parallel jobs:
     1. [mix format][mix-format]
     2. [credo][credo] code analysis
-    3. [dialyzer][dialyxir] checks
 3. Run [exunit tests][exunit], including integration tests via [wallaby][wallaby] using headless Chrome.
 
 ## License
