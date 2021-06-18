@@ -97,3 +97,9 @@ blocks:
         # https://docs.semaphoreci.com/article/54-toolbox-reference#sem-service
         - sem-service start postgres
         - mix test
+      epilogue:
+        always:
+          commands:
+            # Publish test results
+            # See LINK_TO_DOCS
+            - test-results publish /tmp/junit.xml
