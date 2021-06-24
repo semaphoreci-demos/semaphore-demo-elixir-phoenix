@@ -22,3 +22,10 @@ if url = System.get_env("DATABASE_URL") do
 else
   config :sema, Sema.Repo, database: "sema_test"
 end
+
+config :junit_formatter,
+  report_file: "junit.xml",
+  report_dir: "/tmp",
+  print_report_file: true,
+  include_filename?: true,
+  include_file_line?: true
