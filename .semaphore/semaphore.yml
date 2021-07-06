@@ -101,5 +101,4 @@ blocks:
         always:
           commands:
             # Publish test results
-            # See LINK_TO_DOCS
             - test-results publish /tmp/junit.xml
