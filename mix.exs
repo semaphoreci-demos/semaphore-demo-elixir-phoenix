@@ -49,7 +49,8 @@ defmodule Sema.MixProject do
       {:credo, "~> 1.0", runtime: false, only: :dev},
       {:distillery, "~> 2.0", runtime: false},
       {:dialyxir, "~> 1.0-rc", runtime: false, only: :dev},
-      {:wallaby, "~> 0.22.0", runtime: false, only: :test}
+      {:wallaby, "~> 0.22.0", runtime: false, only: :test},
+      {:junit_formatter, "~> 3.1", only: [:test]}
     ]
   end
 
