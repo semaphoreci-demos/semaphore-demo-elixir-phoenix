@@ -6,7 +6,7 @@ set -e
 # ERLANG_VSN=21.2
 # ERLANG_CACHE_KEY=kerl-erlang-$ERLANG_VERSION
 
-ELIXIR_VSN=1.8.1
+ELIXIR_VSN=1.11
 ELIXIR_CACHE_KEY=kiex-elixir-$ELIXIR_VSN
 
 if cache has_key "$ELIXIR_CACHE_KEY"; then

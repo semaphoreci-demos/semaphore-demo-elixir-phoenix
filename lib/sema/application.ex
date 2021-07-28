@@ -9,6 +9,7 @@ defmodule Sema.Application do
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository
+      {Phoenix.PubSub, name: Sema.PubSub},
       Sema.Repo,
       # Start the endpoint when the application starts
       SemaWeb.Endpoint

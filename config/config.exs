@@ -17,7 +17,7 @@ config :sema, SemaWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Zef08wblUqtybHGEUQjgM1GaqWzcDGCj9iTSR9eUzk3zptw6tDHJSX9pKveh1LWS",
   render_errors: [view: SemaWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Sema.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: Sema.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,
