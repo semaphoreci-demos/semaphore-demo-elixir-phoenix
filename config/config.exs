@@ -17,7 +17,7 @@ config :sema, SemaWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Zef08wblUqtybHGEUQjgM1GaqWzcDGCj9iTSR9eUzk3zptw6tDHJSX9pKveh1LWS",
   render_errors: [view: SemaWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Sema.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub_server: Sema.PubSub
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -29,12 +29,5 @@ config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-
-config :junit_formatter,
-  report_file: "junit.xml",
-  report_dir: "/tmp",
-  print_report_file: true,
-  include_filename?: true,
-  include_file_line?: true
 
 import_config "#{Mix.env()}.exs"

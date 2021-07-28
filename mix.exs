@@ -5,7 +5,7 @@ defmodule Sema.MixProject do
     [
       app: :sema,
       version: "0.1.0",
-      elixir: "~> 1.8",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -36,8 +36,8 @@ defmodule Sema.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.1"},
-      {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix, "~> 1.5.9"},
+      {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.0"},
       {:postgrex, ">= 0.0.0"},
@@ -45,7 +45,7 @@ defmodule Sema.MixProject do
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"},
+      {:plug_cowboy, "~> 2.1"},
       {:credo, "~> 1.0", runtime: false, only: :dev},
       {:distillery, "~> 2.0", runtime: false},
       {:dialyxir, "~> 1.0-rc", runtime: false, only: :dev},

@@ -30,7 +30,7 @@ blocks:
           - checkout
 
           - bin/setup_ci_elixir
-          - sem-version elixir 1.8.1
+          - sem-version elixir 1.11
 
           # Restore dependencies from cache, command won't fail if it's
           # missing. More on caching:
@@ -59,7 +59,7 @@ blocks:
         commands:
         - checkout
         - bin/setup_ci_elixir
-        - sem-version elixir 1.8.1
+        - sem-version elixir 1.11
         - cache restore
         - cache restore dialyzer-plt
       # This block contains 3 parallel jobs:
@@ -70,7 +70,7 @@ blocks:
 
       - name: dialyzer
         commands:
-        - mix dialyzer --halt-exit-status --no-compile
+        - mix dialyzer --no-compile
 
       - name: formatter
         commands:
@@ -82,7 +82,7 @@ blocks:
         commands:
         - checkout
         - bin/setup_ci_elixir
-        - sem-version elixir 1.8.1
+        - sem-version elixir 1.11
         - cache restore
 
       jobs:
@@ -101,5 +101,4 @@ blocks:
         always:
           commands:
             # Publish test results
-            # See LINK_TO_DOCS
             - test-results publish /tmp/junit.xml
