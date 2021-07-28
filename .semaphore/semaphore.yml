@@ -12,7 +12,7 @@ blocks:
           commands:
             - checkout
             - bin/setup_ci_elixir
-            - sem-version elixir 1.8.1
+            - sem-version elixir 1.11
             - cache restore
             - mix deps.get
             - mix do compile
@@ -24,7 +24,7 @@ blocks:
         commands:
           - checkout
           - bin/setup_ci_elixir
-          - sem-version elixir 1.8.1
+          - sem-version elixir 1.11
           - cache restore
           - mix deps.get
       jobs:
@@ -40,7 +40,7 @@ blocks:
         commands:
           - checkout
           - bin/setup_ci_elixir
-          - sem-version elixir 1.8.1
+          - sem-version elixir 1.11
           - cache restore
           - mix deps.get
       jobs:
@@ -51,3 +51,8 @@ blocks:
           commands:
             - sem-service start postgres
             - mix test
+      epilogue:
+        always:
+          commands:
+            # Publish test results
+            - test-results publish /tmp/junit.xml
