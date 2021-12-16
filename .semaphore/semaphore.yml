@@ -102,3 +102,12 @@ blocks:
           commands:
             # Publish test results
             - test-results publish /tmp/junit.xml
+
+# After pipeline is finished, generate aggregated test report
+# See https://docs.semaphoreci.com/essentials/test-summary/#step-3-collect-and-merge-all-xml-results-in-a-pipeline
+after_pipeline:
+  task:
+    jobs:
+      - name: Publish Results
+        commands:
+          - test-results gen-pipeline-report
