@@ -3,17 +3,20 @@ name: Build & Test
 agent:
   machine:
     type: e1-standard-2
-    os_image: ubuntu1804
+    os_image: ubuntu2004
+global_job_config:
+  prologue:
+    commands:
+      - sem-version elixir 1.11
+      - checkout
+      - bin/setup_ci_elixir
+      - cache restore
 blocks:
   - name: Set up
     task:
       jobs:
         - name: Compile
           commands:
-            - checkout
-            - bin/setup_ci_elixir
-            - sem-version elixir 1.11
-            - cache restore
             - mix deps.get
             - mix do compile
             - MIX_ENV=test mix compile
@@ -22,10 +25,6 @@ blocks:
     task:
       prologue:
         commands:
-          - checkout
-          - bin/setup_ci_elixir
-          - sem-version elixir 1.11
-          - cache restore
           - mix deps.get
       jobs:
         - name: Credo
@@ -38,10 +37,6 @@ blocks:
     task:
       prologue:
         commands:
-          - checkout
-          - bin/setup_ci_elixir
-          - sem-version elixir 1.11
-          - cache restore
           - mix deps.get
       jobs:
         - name: ex_unit
@@ -54,5 +49,10 @@ blocks:
       epilogue:
         always:
           commands:
-            # Publish test results
             - test-results publish /tmp/junit.xml
+after_pipeline:
+  task:
+    jobs:
+      - name: Publish Results
+        commands:
+          - test-results gen-pipeline-report
