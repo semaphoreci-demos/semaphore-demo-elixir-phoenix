@@ -10,5 +10,5 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
-            - echo hello > /tmp/hello.txt
-            - artifact push project /tmp/hello.txt
+            - sleep 60
+            - echo hello
