@@ -10,5 +10,4 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
-            - sleep 60
             - echo hello
