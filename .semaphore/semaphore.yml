@@ -2,8 +2,8 @@ version: v1.0
 name: Initial Pipeline
 agent:
   machine:
-    type: s1-lucaspin-local-testing
-    os_image: ''
+    type: e1-standard-2
+    os_image: ubuntu2204
 blocks:
   - name: 'Block #1'
     task:
