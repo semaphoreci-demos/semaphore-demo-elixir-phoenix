@@ -10,4 +10,4 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
-            - 'for i in {1..300}; do echo "[$i] this is some output, just for testing purposes" && sleep 1; done'
+            - 'for i in {1..12}; do echo "[$i] this is some output, just for testing purposes" && sleep 1; done'
